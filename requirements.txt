@@ -1,0 +1,19 @@
+# Streamlit
+streamlit==1.23.1
+
+# LLM
+openai==0.27.0
+transformers==4.29.1
+torch>=1.10
+
+# PDF and DOCX
+pymupdf==1.22.5
+PyPDF2==3.0.1
+python-docx==0.8.11
+
+# RAG / embeddings (optional)
+faiss-cpu==1.7.4
+sentence-transformers==2.2.2
+
+# General
+requests>=2.28
