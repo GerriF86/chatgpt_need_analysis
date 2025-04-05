@@ -1,22 +1,54 @@
-# utils/ui_utils.py
+import base64
 import streamlit as st
+from pathlib import Path
 
 def apply_base_styling():
     """
-    Insert custom CSS or apply a general theme. 
+    Insert custom CSS or apply a general theme, including
+    a conditional background image based on the wizard section.
     """
-    st.markdown("""
+
+    # 1) Determine which image to use. If st.session_state["current_section"] == 1, pick image1, else image2.
+    current_section = st.session_state.get("current_section", 1)
+
+    if current_section == 1:
+        image_path = Path("images/AdobeStock_258774440.jpeg")
+    else:
+        image_path = Path("images/AdobeStock_567681994.jpeg")
+
+    # 2) Encode the selected image in base64 to embed in CSS
+    try:
+        with open(image_path, "rb") as file:
+            encoded_image = base64.b64encode(file.read()).decode()
+    except Exception as e:
+        # Fallback if something goes wrong (e.g., file not found):
+        print(f"Warning: Could not read {image_path}: {e}")
+        encoded_image = ""
+
+    # 3) Define our CSS: 
+    # - Add an overlay so text is readable (optional)
+    # - Use the .stApp selector to cover the entire Streamlit main area
+    # - Use background-size: cover to scale or crop the image for a full-page background
+    css_style = f"""
     <style>
-    body {
+    body {{
         font-family: 'Arial', sans-serif;
-    }
-    .stButton>button {
+    }}
+    .stApp {{
+        background: linear-gradient(rgba(255,255,255,0.45), rgba(255,255,255,0.45)),
+                    url("data:image/jpeg;base64,{encoded_image}") no-repeat center center fixed;
+        background-size: cover;
+    }}
+    .stButton>button {{
         background-color: #4CAF50;
         color: white;
         margin: 3px;
-    }
+    }}
     </style>
-    """, unsafe_allow_html=True)
+    """
+
+    # 4) Inject the final style block
+    st.markdown(css_style, unsafe_allow_html=True)
 
 def show_sidebar_links():
     """Placeholder for any global nav or links in the sidebar."""
