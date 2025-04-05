@@ -2,8 +2,6 @@
 # app.py
 
 import streamlit as st
-import openai
-import requests
 from controllers import wizard_pages
 from utils.session_utils import init_main_state
 

@@ -113,3 +113,21 @@ class LLMService:
             if line:
                 lines.append(line)
         return lines[:limit]
+
+def create_llm_service(llm_choice: Optional[str] = None) -> LLMService:
+    """
+    Create and return an LLMService instance based on the given or configured model choice.
+    If llm_choice is None, uses the environment variable LLM_CHOICE or defaults to "openai_3.5".
+    If the choice indicates a local model, use the local model path from environment (if set).
+    """
+    import os
+    if llm_choice is None:
+        llm_choice = os.getenv("LLM_CHOICE", "openai_3.5")
+    # Retrieve OpenAI API key from environment (if available)
+    openai_api_key = os.getenv("OPENAI_API_KEY") or None
+    if llm_choice == "local_llama":
+        local_model_path = os.getenv("LOCAL_MODEL_PATH", "decapoda-research/llama-7b-hf")
+        return LLMService(openai_api_key=None, local_model=local_model_path)
+    else:
+        # Default to OpenAI model (gpt-3.5-turbo)
+        return LLMService(openai_api_key=openai_api_key, local_model=None)
