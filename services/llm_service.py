@@ -3,6 +3,9 @@
 import os
 import re
 from typing import List, Optional
+import openai
+import requests
+import streamlit as st
 
 class LLMService:
     def __init__(self, openai_api_key: Optional[str] = None, local_model: Optional[str] = None, default_openai_model: str = "gpt-3.5-turbo"):
@@ -35,7 +38,7 @@ class LLMService:
             if openai_api_key:
                 openai.api_key = openai_api_key
             else:
-                env_key = os.getenv("OPENAI_API_KEY", None)
+                env_key = st.secrets["OPENAI_API_KEY"]
                 if env_key:
                     openai.api_key = env_key
                 else:
