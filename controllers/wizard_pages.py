@@ -31,7 +31,7 @@ def start_discovery_page():
     st.session_state["model_temperature"] = st.sidebar.slider("Temperature", 0.0, 1.0, current_temp, 0.05)
 
     # Heading / Intro
-    st.image("images/lama.png", width=80)  # you can replace with your own image
+    st.image("images/sthree.png", width=80)  # you can replace with your own image
     st.title("Vacalyser")
     st.markdown("""
     **Enhancing hiring workflows** with intelligent suggestions and automations.  
