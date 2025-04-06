@@ -64,7 +64,6 @@ def start_discovery_page():
 
     st.image("images/sthree.png", width=80)
     st.title("Vacalyser")
-    openai.api_key = st.secrets["OPENAI_API_KEY"]
 
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
