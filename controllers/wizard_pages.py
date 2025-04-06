@@ -1,6 +1,7 @@
 # controllers/wizard_pages.py
 
 import streamlit as st
+import openai
 
 from controllers.evaluation_controller import analyze_uploaded_sources
 
@@ -63,6 +64,15 @@ def start_discovery_page():
 
     st.image("images/sthree.png", width=80)
     st.title("Vacalyser")
+    openai.api_key = st.secrets["OPENAI_API_KEY"]
+
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role": "user", "content": "Hello, world!"}]
+    )
+
+    print(response.choices[0].message.content)
+    st.write(st.secrets["OPENAI_API_KEY"])  # temporary, just for checking
     st.markdown(
         "**Enhancing hiring workflows** with intelligent suggestions and automations. "
         "We help teams fine-tune job postings and CVs efficiently for better hiring outcomes."

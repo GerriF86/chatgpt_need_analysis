@@ -45,7 +45,7 @@ class LLMService:
                     raise ValueError("No OpenAI API key provided or found in environment.")
             self.provider = "openai"
 
-def complete(self, prompt: str, system_message: Optional[str] = None, temperature: float = 0.7, max_tokens: int = 300) -> str:
+def complete(self, prompt: str, system_message: Optional[str] = None, temperature: float = 0.7, max_tokens: int = 100) -> str:
         """
         Generate text using either OpenAI ChatCompletion or a local HF pipeline.
         """
@@ -98,7 +98,7 @@ def generate_suggestions(self, job_title: str, category: str, count: int = 15) -
 
         system_text = "You are an AI assistant helping create job descriptions. Provide concise suggestions."
 
-        raw = self.complete(prompt=user_prompt, system_message=system_text, temperature=0.7, max_tokens=500)
+        raw = self.complete(prompt=user_prompt, system_message=system_text, temperature=0.7, max_tokens=100)
         suggestions = self._parse_suggestions_from_text(raw, count)
         return suggestions
 
