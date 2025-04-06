@@ -2,26 +2,44 @@ import io
 from pathlib import Path
 from typing import Union
 
-from PyPDF2 import PdfReader
+import PyPDF2
+from sklearn.feature_extraction.text import TfidfVectorizer
+import re
 from docx import Document
+# Simulated session state key categories (trimmed down for demo)
+SESSION_KEYS = {
+    "company_name": ["company", "about us", "who we are", "our company"],
+    "job_title": ["job title", "position", "role", "vacancy"],
+    "location": ["location", "workplace", "site"],
+    "responsibilities": ["responsibilities", "tasks", "your role", "what you will do"],
+    "skills": ["requirements", "skills", "what we expect", "qualifications"],
+    "benefits": ["benefits", "what we offer", "perks"],
+    "application_process": ["how to apply", "recruitment process", "next steps"],
+}
 
-def extract_text_from_pdf(file_path_or_bytes: Union[str, bytes]) -> str:
-    """
-    Extract text from a PDF file given a file path or bytes.
-    """
-    try:
-        if isinstance(file_path_or_bytes, (str, Path)):
-            # If a file path is provided
-            reader = PdfReader(str(file_path_or_bytes))
-        else:
-            # If bytes content is provided
-            reader = PdfReader(io.BytesIO(file_path_or_bytes))
-        text = ""
-        for page in reader.pages:
-            text += page.extract_text() + "\n"
-    except Exception as e:
-        raise RuntimeError(f"Failed to read PDF file: {e}")
-    return text
+def extract_text_from_pdf(pdf_file):
+    """Extract raw text from uploaded PDF."""
+    reader = PyPDF2.PdfReader(pdf_file)
+    text = " ".join(page.extract_text() or "" for page in reader.pages)
+    return text.lower()
+
+def match_and_store_keys(text, session_keys):
+    """Match content against session keys and store them."""
+    for key, patterns in session_keys.items():
+        # Search using pattern hints
+        for pattern in patterns:
+            match = re.search(rf"{pattern}[:\-]?\s*(.+?)(?=\n|\.|$)", text)
+            if match:
+                value = match.group(1).strip()
+                st.session_state[key] = value
+                break  # stop on first match
+
+def analyze_pdf_and_store_keys(pdf_file):
+    """Full process: extract text → match patterns → store in session_state."""
+    raw_text = extract_text_from_pdf(pdf_file)
+    match_and_store_keys(raw_text, SESSION_KEYS)
+    return raw_text  # for optional inspection or GPT post-processing
+
 
 def extract_text_from_docx(file_path_or_bytes: Union[str, bytes]) -> str:
     """

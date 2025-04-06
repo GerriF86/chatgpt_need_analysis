@@ -1,4 +1,3 @@
-#main
 # app.py
 
 import streamlit as st
@@ -6,7 +5,6 @@ from controllers import wizard_pages
 from utils.session_utils import init_main_state
 
 def main():
-    st.set_page_config(page_title="Vacalyser Wizard", layout="wide")
 
     # Ensure we have essential session keys ready
     init_main_state()  # sets "current_section", etc., if not already set

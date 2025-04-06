@@ -45,7 +45,7 @@ class LLMService:
                     raise ValueError("No OpenAI API key provided or found in environment.")
             self.provider = "openai"
 
-    def complete(self, prompt: str, system_message: Optional[str] = None, temperature: float = 0.7, max_tokens: int = 300) -> str:
+def complete(self, prompt: str, system_message: Optional[str] = None, temperature: float = 0.7, max_tokens: int = 300) -> str:
         """
         Generate text using either OpenAI ChatCompletion or a local HF pipeline.
         """
@@ -81,7 +81,7 @@ class LLMService:
             except Exception as e:
                 raise RuntimeError(f"Local model generation failed: {e}")
 
-    def generate_suggestions(self, job_title: str, category: str, count: int = 15) -> List[str]:
+def generate_suggestions(self, job_title: str, category: str, count: int = 15) -> List[str]:
         """
         Provide a short list of suggestions for tasks, skills, or benefits, tailored to a job title.
         """
@@ -102,7 +102,7 @@ class LLMService:
         suggestions = self._parse_suggestions_from_text(raw, count)
         return suggestions
 
-    def _parse_suggestions_from_text(self, raw_text: str, limit: int = 15) -> List[str]:
+def _parse_suggestions_from_text(self, raw_text: str, limit: int = 15) -> List[str]:
         """
         Splits the raw LLM output into lines, cleans them up, returns up to `limit`.
         """
@@ -122,9 +122,9 @@ def create_llm_service(llm_choice: Optional[str] = None) -> LLMService:
     """
     import os
     if llm_choice is None:
-        llm_choice = os.getenv("LLM_CHOICE", "openai_3.5")
+        llm_choice = st.secrets.get("LLM_CHOICE", "openai_3.5")
     # Retrieve OpenAI API key from environment (if available)
-    openai_api_key = os.getenv("OPENAI_API_KEY") or None
+    openai_api_key = st.secrets.get("OPENAI_API_KEY") or None
     if llm_choice == "local_llama":
         local_model_path = os.getenv("LOCAL_MODEL_PATH", "decapoda-research/llama-7b-hf")
         return LLMService(openai_api_key=None, local_model=local_model_path)

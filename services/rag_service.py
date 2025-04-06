@@ -16,7 +16,7 @@ class RAGService:
         self.index = None
         self.documents: List[str] = []
 
-    def build_index(self, texts: List[str]):
+def build_index(self, texts: List[str]):
         """
         Build a FAISS index from a list of text documents or tokens.
         :param texts: List of text strings to index.
@@ -38,7 +38,7 @@ class RAGService:
         self.index.add(embeddings_norm)
         self.documents = list(texts)
 
-    def search(self, query: str, k: int = 5) -> List[str]:
+def search(self, query: str, k: int = 5) -> List[str]:
         """
         Search the index for texts similar to the query.
         :param query: Query string to search for.
