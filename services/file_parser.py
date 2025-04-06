@@ -1,3 +1,5 @@
+# services/fileparser.py
+
 import io
 from pathlib import Path
 from typing import Union
@@ -34,7 +36,7 @@ def match_and_store_keys(text, session_keys):
                 st.session_state[key] = value
                 break  # stop on first match
 
-def analyze_pdf_and_store_keys(pdf_file):
+def analyse_pdf_and_store_keys(pdf_file):
     """Full process: extract text → match patterns → store in session_state."""
     raw_text = extract_text_from_pdf(pdf_file)
     match_and_store_keys(raw_text, SESSION_KEYS)

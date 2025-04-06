@@ -1,3 +1,5 @@
+# utils/ui_utils.py
+
 import base64
 import streamlit as st
 from pathlib import Path
