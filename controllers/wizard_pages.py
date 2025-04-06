@@ -71,7 +71,6 @@ def start_discovery_page():
     )
 
     print(response.choices[0].message.content)
-    st.write(st.secrets["OPENAI_API_KEY"])  # temporary, just for checking
     st.markdown(
         "**Enhancing hiring workflows** with intelligent suggestions and automations. "
         "We help teams fine-tune job postings and CVs efficiently for better hiring outcomes."
